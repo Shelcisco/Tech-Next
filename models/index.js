@@ -20,17 +20,17 @@ Blog.hasMany(Comment, {
 
 })
 
-Blog.belongTo(User, {
+Blog.belongsTo(User, {
     foreignKey: "user_id",
 
 })
 
-Comment.belongTo(User, {
+Comment.belongsTo(User, {
     foreignKey: "user_id",
 
 })
 
-Comment.belongTo(Blog, {
+Comment.belongsTo(Blog, {
     foreignKey: "blog_id",
 
 })
