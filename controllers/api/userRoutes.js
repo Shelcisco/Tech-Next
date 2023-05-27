@@ -5,13 +5,13 @@ router.post("/login", async (req, res) => {
   try {
     const data = await User.findOne({
       where: {
-        email: req.body.email
+        username: req.body.username
       }
 
     })
 
     if (!data) {
-      res.status(400).json({ message: "incorecct email, please try again" })
+      res.status(400).json({ message: "incorecct username, please try again" })
       return} 
       const validPassword = await data.checkPassword(req.body.password)
       if (!validPassword){
@@ -29,6 +29,16 @@ router.post("/login", async (req, res) => {
   }
 })
 
+router.post("/logout", async (req, res) => {
+  if (req.session.logged_in) {
+    req.session.destroy(()=>{
+      res.status(200).end();
+    })
+  }
+  else {
+    res.status(404).end();
+  }
+}) 
 
 router.get('/', async (req, res) => {
   try {
@@ -59,12 +69,19 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+  
   try {
     const data = await User.create(req.body);
-    res.status(200).json(data);
+    req.session.save(()=>{
+      req.session.user_id=data.id
+      req.session.logged_in=true
+      res.json({user:data,message:"logged in"})
+    })
+    // res.status(200).json(data);
   } catch (err) {
     res.status(400).json(err);
   }
+
 });
 
 router.put('/:id', async (req, res) => {
