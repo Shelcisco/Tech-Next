@@ -45,21 +45,26 @@ router.get('/dashboard', withAuth, async (req, res) => {
 router.get('/blog/:id', async (req, res) => {
   try {
     const target = req.params.id;
-    // Get all users, sorted by name
-    const data = await Blog.findByPk({
-      target, 
-      include: [{model:User}, {model:Comment}]
-    });
+    //Get all users, sorted by name
+    const data = await Blog.findByPk(target, {
+      
+     include: {all:true,nested:true}
+     });
+
+  //   const data = await fetch (`/api/blog/${req.params.id}`, {
+  //     method:"GET",
+  //     headers: {"Content-Type":"application/json"}
+  // } ) 
 const blog = data.get({plain:true})
     
 
     const logged_in = req.session.logged_in
     if (logged_in&&req.session.user_id==blog.user_id){
-      res.render('edit-blog', {...blog,logged_in }); 
+      res.render('edit-blog', {...blog,logged_in:req.session.logged_in }); 
     }
     else {
 // Pass serialized data into Handlebars.js template
-    res.render('view-blog', { ...blog,logged_in });
+    res.render('view-blog', { ...blog,logged_in:req.session.logged_in });
   }
 
   } catch (err) {
@@ -76,5 +81,15 @@ catch (err) {
   res.status(500).json(err);
 }
 })
+
+router.get ('/create', withoutAuth, async (req,res) => {
+  try{
+    const logged_in = req.session.logged_in
+    res.render('create-blog', {logged_in});
+  }
+  catch (err) {
+    res.status(500).json(err);
+  }
+  })
 
 module.exports = router;
