@@ -32,7 +32,13 @@ router.get('/:id', async(req, res) => {
 
 router.post('/', async(req, res) => {
   try {
-    const data = await Comment.create(req.body);
+    const user_id = req.session.user_id;
+    console.log(req.body);
+    const data = await Comment.create({
+      content:req.body.content,
+      blog_id:req.body.blog_id, 
+      user_id
+    });
     res.status(200).json(data);
   } catch (err) {
     res.status(400).json(err);

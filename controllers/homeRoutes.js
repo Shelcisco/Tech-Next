@@ -82,7 +82,7 @@ catch (err) {
 }
 })
 
-router.get ('/create', withoutAuth, async (req,res) => {
+router.get ('/create', withAuth, async (req,res) => {
   try{
     const logged_in = req.session.logged_in
     res.render('create-blog', {logged_in});
