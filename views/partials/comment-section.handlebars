@@ -1,0 +1,23 @@
+
+<br></br>
+<h3>--Comments--</h3>
+{{#each comments as |comment|}}
+{{> comment-details}}
+{{/each}}
+{{#if logged_in}}
+<button id="add-comment">Add Comment</button>
+{{/if}}
+<form class="form" id = "comment-form" style="visibility:hidden;">
+    <div class="form-group">
+
+        
+        <textarea id="comment-content" class="form-input"></textarea>
+        <button id ="create-btn" class="btn" type="submit">Save</button>
+
+    </div>
+
+    
+
+</form>
+
+<script src="/js/comment.js"></script>
