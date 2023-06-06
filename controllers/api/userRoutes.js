@@ -77,7 +77,6 @@ router.post('/', async (req, res) => {
       req.session.logged_in=true
       res.json({user:data,message:"logged in"})
     })
-    // res.status(200).json(data);
   } catch (err) {
     res.status(400).json(err);
   }
