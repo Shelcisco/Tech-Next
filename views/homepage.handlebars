@@ -1,3 +1,7 @@
+{{#if blogs}}
 {{#each blogs as |blog|}}
 {{> blog-details}}
 {{/each}}
+{{else}}
+<h1>No Data</h1>
+{{/if}}
